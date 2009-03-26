@@ -2,14 +2,15 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 class TestController < ApplicationController;end
 
+CaptchaImage = Struct.new("CaptchaImage", :id, :category_names, :captcha_length, :text, :imageURI, :attempted, :authenticated)
+
 module Vidoop::Captcha
 
   describe Helper do
     before(:each) do
       @klass = Class.new {include Helper}
       @captcha = @klass.new
-      @image = Struct.new("CaptchaImage", :id, :category_names, :captcha_length, :text, :imageURI, :attempted, :authenticated).
-      new("cpt123", ["foo", "bar"], 2, "foo bar", "http://api.vidoop.com/vs/captchas/cpt123/image", false, false)
+      @image = CaptchaImage.new("cpt123", ["foo", "bar"], 2, "foo bar", "http://api.vidoop.com/vs/captchas/cpt123/image", false, false)
     end
 
     describe "rendering a catpcha" do
@@ -32,8 +33,7 @@ describe VidoopCaptcha do
 
   context "requesting an image" do
     before do
-      @image = Struct.new("CaptchaImage", :id, :category_names, :captcha_length, :text, :imageURI, :attempted, :authenticated).
-      new("cpt123", ["foo", "bar"], 2, "foo bar", "http://api.vidoop.com/vs/captchas/cpt123/image", false, false)
+      @image = CaptchaImage.new("cpt123", ["foo", "bar"], 2, "foo bar", "http://api.vidoop.com/vs/captchas/cpt123/image", false, false)
     end
     it "should verify a 9 image grid has 4 categories" do
       lambda {VidoopCaptcha.request_captcha_image(:height => 3, :width => 3, :length => 3)}.should raise_error(VidoopCaptchaError)
@@ -68,9 +68,8 @@ describe VidoopCaptcha do
       response = Net::HTTPSuccess.new("1.1", "200", "Success")
       response.stub!(:body).and_return(xml)
       VidoopCaptcha.stub!(:post).and_return response
-      struct = Struct.new("CaptchaImage", :id, :category_names, :captcha_length, :text, :imageURI, :attempted, :authenticated).
-      new("NVBRFYB44N", ["wild animals", "computers", "food"], "3", "Enter the letters, in order, for: wild animals, computers, food", "https://api.vidoop.com/vs/captchas/NVBRFYB44N/image", "false", "false")
-      VidoopCaptcha.request_captcha_image.to_yaml.should == struct.to_yaml
+      captcha = CaptchaImage.new("NVBRFYB44N", ["wild animals", "computers", "food"], "3", "Enter the letters, in order, for: wild animals, computers, food", "https://api.vidoop.com/vs/captchas/NVBRFYB44N/image", "false", "false")
+      VidoopCaptcha.request_captcha_image.to_yaml.should == captcha.to_yaml
     end
 
   end
@@ -92,8 +91,8 @@ describe VidoopCaptcha do
     it "should verify code with server" do
       VidoopCaptcha.mode = :do_it_for_real
       VidoopCaptcha.should_receive(:post).
-      with("https://api.vidoop.com/vs/captcha/cpt123", {:code => "abc"}, false).
-      and_return(Net::HTTPResponse.new("1.1", 430, "Unauthorized" ))
+        with("https://api.vidoop.com/vs/captchas/cpt123", {:code => "abc"}).
+        and_return(Net::HTTPResponse.new("1.1", 430, "Unauthorized" ))
       @captcha = VidoopCaptcha.build("cpt123", "abc")
       @captcha.should_not be_valid
       @captcha.errors.should_not be_blank
