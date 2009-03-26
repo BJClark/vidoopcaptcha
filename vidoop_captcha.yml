@@ -1,0 +1,20 @@
+development:
+  server: api.vidoop.com
+  customer_id:
+  site_id:
+  username:
+  password:
+
+test:
+  server: api.test.com
+  customer_id: '12345'
+  site_id: aboutus.org
+  username: foo
+  password: bar
+
+production:
+  server: api.vidoop.com
+  customer_id:
+  site_id:
+  username:
+  password:
