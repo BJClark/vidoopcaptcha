@@ -1,13 +1,38 @@
 VidoopCaptcha
 =============
 
-Introduction goes here.
+Rails plugin for integrating Vidoop's Captcha service into a rails app.
 
+Dependencies: Net:HTTPS, Hpricot
 
 Example
 =======
+0. Sign up for a VidoopSecure account at: https://login.vidoop.com/accounts/create/
 
-Example goes here.
+1. script/plugin install
+
+2. Edit config/vidoop_captcha.yml with your information from Step 1.
+
+3. Assuming your form uses form_for, in your view add the following line in your form where you want your captcha to appear.
+
+<%=  vidoop_captcha() %>
+
+4. In the model for your form, you'll want something similar to:
+
+attr_accessor :vidoop_captcha
+validates_presence_of :vidoop_captcha, :on => :create
+validates_associated :vidoop_captcha
+
+5. In your controller, you'll want to use the VidoopCaptcha#build method to pass the params to:
+
+@user = User.new(params[:user].merge(:vidoop_captcha => VidoopCaptcha.build(params[:captcha_id], params[:captcha])))
+
+6. Profit!
+
+You'll notice that your model doesn't pass validations without a valid captcha, so just redirect back to the form and it will show the error with the form.
 
 
-Copyright (c) 2009 [name of plugin creator], released under the MIT license
+Something to note is that every time you show a captcha, you have to make a Net::HTTPS call to the Vidoop servers to request creation of a captcha. Just something to keep in mind.
+
+Copyright (c) 2009 AboutUs.org, released under the MIT license
+Created by BJ Clark (@RobotDeathSquad) for AboutUs.org
