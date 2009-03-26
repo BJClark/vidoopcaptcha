@@ -8,7 +8,7 @@ development:
 test:
   server: api.test.com
   customer_id: '12345'
-  site_id: aboutus.org
+  site_id:
   username: foo
   password: bar
 
