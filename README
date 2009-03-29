@@ -7,7 +7,7 @@ Dependencies: Net:HTTPS, Hpricot
 
 Example
 =======
--1. Check out my Fork of the Authlogic Example app with the Vidoop Captcha plugin. The best commit to check out is here: http://github.com/RobotDeathSquad/authlogic_example/commit/ed1b2dc82e2269c8aaca09965dc1343a531727e9  That shows all the code needed to install the plugin, generate a captcha, and verify it against Vidoop's servers.
+-1. Check out my Fork of the Authlogic Example app with the Vidoop Captcha plugin. The best commit to check out is here: http://github.com/RobotDeathSquad/authlogic_example_with_vidoop_captcha/commit/ed1b2dc82e2269c8aaca09965dc1343a531727e9  That shows all the code needed to install the plugin, generate a captcha, and verify it against Vidoop's servers.
 
 On to the install:
 
