@@ -31,7 +31,12 @@ validates_associated :vidoop_captcha
 
 @user = User.new(params[:user].merge(:vidoop_captcha => VidoopCaptcha.build(params[:captcha_id], params[:captcha])))
 
-6. Profit!
+6. Include Vidoop Captcha Flyout Library & JQuery
+
+The plugin won't include the flyout.min.js file in your layout, so make sure you do a <%= javascript_include_tag "flyout.min" %> .
+The flyout.min.js file requires JQuery. Please install JQuery or the JRails plugin if you don't use JQuery.
+
+7. Profit!
 
 You'll notice that your model doesn't pass validations without a valid captcha, so just redirect back to the form and it will show the error with the form.
 

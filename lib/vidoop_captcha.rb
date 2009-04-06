@@ -10,8 +10,6 @@ module Vidoop
       def build(image)
         xhtml = Builder::XmlMarkup.new :target => out=('')
         xhtml.div(:class => "captcha") do
-          xhtml.script(:type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"){}
-          xhtml.script(:type => "text/javascript", :src => "http://vidoopsecure.googlecode.com/files/flyout-0.9.4.js.min"){}
           xhtml.label("Captcha", :for => "captcha")
           xhtml.div(:class => "vidoop_secure") do
             xhtml.input(:name => "captcha_id", :value => image.id, :type => :hidden)
