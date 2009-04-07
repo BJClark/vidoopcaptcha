@@ -16,7 +16,9 @@ module Vidoop
             xhtml.input(:type => "text", :id => "captcha", :name => "captcha", :autocomplete => "off", :maxlength => image.length)
           end
           xhtml.script(:type => "text/javascript") do
-            xhtml.text! "var vidoop_secure = {  instructions: '#{image.text}' };"
+            xhtml.text! "var vidoop_secure = {  instructions: '"
+            xhtml << image.text
+            xhtml.text! "' };"
           end
           xhtml.noscript do
             xhtml.image(:src => image.imageURI, :alt => "VidoopSecure Captcha Image")
